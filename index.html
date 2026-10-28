@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green Heaven - Plant Nursery</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <style>
+        /* Smooth scrolling for single page navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Dark Theme Styling */
+        body {
+            background-color: #1f1838;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Fixed Navbar */
+        .navbar {
+            background: rgba(18, 11, 41, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #332759;
+            z-index: 1030;
+        }
+
+        .navbar-toggler {
+            border-color: #554185;
+            padding: 8px 12px;
+        }
+
+        /* Hero / Home Background matching reference image layout */
+        .hero-section {
+            background: linear-gradient(rgba(18, 11, 41, 0.55), rgba(31, 24, 56, 0.85)), 
+                        url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=1600&q=80') center/cover no-repeat;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .hero-text {
+            color: #d1c4e9;
+            font-size: 1.15rem;
+            max-width: 550px;
+            line-height: 1.6;
+            margin-bottom: 1.8rem;
+        }
+
+        .btn-overview {
+            background-color: #007bff;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 10px 28px;
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .btn-overview:hover {
+            background-color: #0056b3;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* Card Styles */
+        .plant-card {
+            background-color: #2b214d;
+            border: 1px solid #3d2f6d;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .plant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .plant-card img {
+            border-radius: 14px;
+            padding: 10px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-title {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .rating-stars {
+            color: #ffc107;
+            font-size: 0.85rem;
+        }
+
+        .price-text {
+            color: #fca382;
+            font-weight: bold;
+        }
+
+        .price-old {
+            color: #8c7ba8;
+            text-decoration: line-through;
+            font-size: 0.85rem;
+            margin-left: 5px;
+        }
+
+        .btn-order {
+            background-color: #e58d71;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            padding: 8px;
+            width: 100%;
+        }
+
+        .btn-order:hover {
+            background-color: #d47b5f;
+            color: #ffffff;
+        }
+
+        .btn-details {
+            background-color: transparent;
+            color: #a893d1;
+            border: 1px solid #4a3875;
+            border-radius: 8px;
+            padding: 6px;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .btn-details:hover {
+            background-color: #3b2c61;
+            color: #ffffff;
+        }
+
+        /* Custom SweetAlert Modal */
+        .custom-modal-popup {
+            background-color: #4b2d7f !important;
+            border-radius: 24px !important;
+            padding: 30px !important;
+            color: #ffffff !important;
+        }
+
+        .custom-check-circle {
+            width: 70px;
+            height: 70px;
+            background-color: #f7a8b8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
+        .custom-check-circle i {
+            color: #3f1f6d;
+            font-size: 32px;
+        }
+
+        .custom-confirm-btn {
+            background-color: #fba993 !important;
+            color: #2b1747 !important;
+            font-weight: bold !important;
+            border-radius: 12px !important;
+            padding: 12px 0 !important;
+            width: 80% !important;
+            font-size: 1.05rem !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Form Controls Dark Styling */
+        .form-control, .form-select {
+            background-color: #2b214d;
+            border: 1px solid #4a3875;
+            color: #ffffff;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #332759;
+            color: #ffffff;
+            border-color: #fca382;
+            box-shadow: none;
+        }
+
+        .form-control::placeholder {
+            color: #8c7ba8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <!-- Cola Next Logo -->
+            <a class="navbar-brand d-flex align-items-center" href="#home">
+                <img src="https://via.placeholder.com/120x40/ff0000/ffffff?text=Cola+Next" alt="Cola Next Logo" class="me-2 rounded" style="height: 38px;">
+                <span class="fw-bold fs-4 text-white ms-2">Green Heaven</span>
+            </a>
+            
+            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto text-center py-2 py-lg-0">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#book">Book</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ================= HOME / HERO SECTION WITH PLANT BACKGROUND ================= -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 col-md-9">
+                    <h1 class="hero-title">Greenery</h1>
+                    <p class="hero-text">
+                        Create unique, functional indoor spaces with our wide selection of fresh green plants. Bring nature directly into your house today.
+                    </p>
+                    <a href="#products" class="btn btn-overview text-decoration-none">Overview</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PRODUCTS SECTION (10 CARDS) ================= -->
+    <section id="products" class="container my-5 pt-5">
+        <h2 class="text-center mb-5 fw-bold" style="color: #d1c4e9;"><i class="fas fa-leaf me-2"></i>Our Plant Collection</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            
+            <!-- Card 1 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1545241047-6083a3684587?w=400&q=80" alt="Snake Plant">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Snake Plant</h5>
+                        <div class="rating-stars mb-2">★★★★★</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Easy air-purifying indoor plant.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 899</span>
+                            <span class="price-old">Rs. 1,199</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Snake Plant')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Snake Plant')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=400&q=80" alt="Monstera Deliciosa">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Monstera Deliciosa</h5>
+                        <div class="rating-stars mb-2">★★★★★</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Tropical plant with split leaves.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 1,499</span>
+                            <span class="price-old">Rs. 1,899</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Monstera Deliciosa')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Monstera Deliciosa')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1512428813834-c702c7702b78?w=400&q=80" alt="Aloe Vera">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Aloe Vera</h5>
+                        <div class="rating-stars mb-2">★★★★☆</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Medicinal succulent plant.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 599</span>
+                            <span class="price-old">Rs. 799</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Aloe Vera')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Aloe Vera')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=400&q=80" alt="Peace Lily">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Peace Lily</h5>
+                        <div class="rating-stars mb-2">★★★★★</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Elegant white flowering plant.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 999</span>
+                            <span class="price-old">Rs. 1,299</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Peace Lily')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Peace Lily')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1599598425947-020645557022?w=400&q=80" alt="Spider Plant">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Spider Plant</h5>
+                        <div class="rating-stars mb-2">★★★★☆</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Fast-growing indoor favourite.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 699</span>
+                            <span class="price-old">Rs. 999</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Spider Plant')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Spider Plant')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=400&q=80" alt="Mini Succulents">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Mini Succulents</h5>
+                        <div class="rating-stars mb-2">★★★★★</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Low-maintenance desk plant.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 499</span>
+                            <span class="price-old">Rs. 699</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Mini Succulents')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Mini Succulents')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1604762524889-3e2fcc145683?w=400&q=80" alt="Fiddle Leaf Fig">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Fiddle Leaf Fig</h5>
+                        <div class="rating-stars mb-2">★★★★★</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Stylish broad-leafed indoor tree.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 1,899</span>
+                            <span class="price-old">Rs. 2,399</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Fiddle Leaf Fig')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Fiddle Leaf Fig')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?w=400&q=80" alt="Golden Pothos">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Golden Pothos</h5>
+                        <div class="rating-stars mb-2">★★★★☆</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Beautiful trailing vine plant.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 799</span>
+                            <span class="price-old">Rs. 1,099</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Golden Pothos')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Golden Pothos')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 9 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1592150621744-aca64f48394a?w=400&q=80" alt="Rubber Plant">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Rubber Plant</h5>
+                        <div class="rating-stars mb-2">★★★★★</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Glossy dark burgundy foliage.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 1,299</span>
+                            <span class="price-old">Rs. 1,599</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Rubber Plant')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Rubber Plant')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 10 -->
+            <div class="col">
+                <div class="plant-card h-100 d-flex flex-column p-2">
+                    <img src="https://images.unsplash.com/photo-1512428813834-c702c7702b78?w=400&q=80" alt="Jade Plant">
+                    <div class="p-2 d-flex flex-column flex-grow-1">
+                        <h5 class="card-title mb-1">Jade Plant</h5>
+                        <div class="rating-stars mb-2">★★★★☆</div>
+                        <p class="text-light opacity-75 small flex-grow-1">Classic good luck plant.</p>
+                        <div class="mb-3">
+                            <span class="price-text">Rs. 849</span>
+                            <span class="price-old">Rs. 1,149</span>
+                        </div>
+                        <button class="btn btn-order mb-2" onclick="showOrderModal('Jade Plant')">Order Now</button>
+                        <button class="btn btn-details" onclick="showDetails('Jade Plant')">Details</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= BOOKING CONSULTATION SECTION ================= -->
+    <section id="book" class="py-5" style="background-color: #17112c;">
+        <div class="container py-3">
+            <h2 class="text-center mb-4" style="color: #fca382;">Book a Plant Consultation</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form id="bookingForm" onsubmit="handleBooking(event)" class="p-4 rounded-4" style="background-color: #2b214d;">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" required placeholder="Your Name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Service Type</label>
+                            <select class="form-select">
+                                <option>Indoor Plant Setup</option>
+                                <option>Plant Health Inspection</option>
+                                <option>Garden Maintenance</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-order w-100 mt-2">Submit Booking</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CONTACT SECTION ================= -->
+    <section id="contact" class="container my-5 py-3">
+        <h2 class="text-center mb-4" style="color: #fca382;">Contact Us</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form id="contactForm" onsubmit="handleContact(event)" class="p-4 rounded-4" style="background-color: #2b214d;">
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" required placeholder="name@example.com">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-control" rows="4" required placeholder="Write your message..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-order w-100">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="pt-5 pb-3" style="background-color: #120b29; border-top: 1px solid #332759;">
+        <div class="container">
+            <div class="row">
+                <!-- Cola Next Logo & Info -->
+                <div class="col-md-4 mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="https://via.placeholder.com/120x40/ff0000/ffffff?text=Cola+Next" alt="Cola Next Logo" class="me-2 rounded" style="height: 35px;">
+                        <h5 class="m-0 text-white fw-bold">Green Heaven</h5>
+                    </div>
+                    <p class="text-light opacity-75 small">Your premier online store for healthy and vibrant house plants.</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3" style="color: #fca382;">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-1"><a href="#home" class="text-light opacity-75 text-decoration-none">Home</a></li>
+                        <li class="mb-1"><a href="#products" class="text-light opacity-75 text-decoration-none">Products</a></li>
+                        <li class="mb-1"><a href="#book" class="text-light opacity-75 text-decoration-none">Book Consultation</a></li>
+                        <li class="mb-1"><a href="#contact" class="text-light opacity-75 text-decoration-none">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3" style="color: #fca382;">Get in Touch</h5>
+                    <p class="text-light opacity-75 small mb-1"><i class="fas fa-map-marker-alt me-2"></i>123 Green Street, City</p>
+                    <p class="text-light opacity-75 small mb-1"><i class="fas fa-phone me-2"></i>+123 456 7890</p>
+                    <p class="text-light opacity-75 small"><i class="fas fa-envelope me-2"></i>info@greenheaven.com</p>
+                </div>
+            </div>
+            <hr style="border-color: #332759;">
+            <p class="text-center text-light opacity-50 small mb-0">&copy; 2026 Green Heaven | Powered by Cola Next. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Custom SweetAlert Modal matching screenshot style
+        function showOrderModal(plantName) {
+            Swal.fire({
+                html: `
+                    <div class="custom-check-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2 style="font-weight: 700; font-size: 1.8rem; margin-bottom: 12px; color: #ffffff;">Order Received!</h2>
+                    <p style="color: #d1c4e9; font-size: 0.95rem; margin-bottom: 0;">Your ${plantName} will be shipped within 24 hours.</p>
+                `,
+                showConfirmButton: true,
+                confirmButtonText: 'Excellent',
+                buttonsStyling: false,
+                customClass: {
+                    popup: 'custom-modal-popup',
+                    confirmButton: 'custom-confirm-btn'
+                }
+            });
+        }
+
+        // Details Alert
+        function showDetails(plantName) {
+            Swal.fire({
+                title: plantName,
+                text: `${plantName} is an easy-to-care-for plant suitable for indoor home decoration.`,
+                icon: 'info',
+                confirmButtonText: 'Close',
+                confirmButtonColor: '#4b2d7f'
+            });
+        }
+
+        // Booking Form Alert
+        function handleBooking(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Booking Confirmed!',
+                text: 'We look forward to consulting with you.',
+                icon: 'success',
+                confirmButtonColor: '#e58d71'
+            });
+            e.target.reset();
+        }
+
+        // Contact Form Alert
+        function handleContact(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Message Sent!',
+                text: 'Thank you for reaching out to us.',
+                icon: 'success',
+                confirmButtonColor: '#e58d71'
+            });
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
